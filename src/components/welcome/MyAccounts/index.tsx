@@ -13,6 +13,8 @@ import AddIcon from '@/public/images/common/add.svg'
 import { AppRoutes } from '@/config/routes'
 import ConnectWalletButton from '@/components/common/ConnectWallet/ConnectWalletButton'
 import useWallet from '@/hooks/wallets/useWallet'
+import { useAppSelector } from '@/store'
+import { selectAllVisitedSafesOrderedByTimestamp } from '@/store/visitedSafesSlice'
 
 const NO_SAFES_MESSAGE = "You don't have any Safe Accounts yet"
 
@@ -23,6 +25,8 @@ type AccountsListProps = {
 const AccountsList = ({ safes, onLinkClick }: AccountsListProps) => {
   const ownedSafes = useMemo(() => safes.filter(({ isWatchlist }) => !isWatchlist), [safes])
   const watchlistSafes = useMemo(() => safes.filter(({ isWatchlist }) => isWatchlist), [safes])
+  const visitedSafes = useAppSelector(selectAllVisitedSafesOrderedByTimestamp)
+  console.log('visited safes', visitedSafes)
   const wallet = useWallet()
 
   return (
@@ -77,6 +81,16 @@ const AccountsList = ({ safes, onLinkClick }: AccountsListProps) => {
           onLinkClick={onLinkClick}
         />
 
+        <PaginatedSafeList
+          safes={visitedSafes}
+          title={
+            <>
+              <VisibilityOutlined sx={{ verticalAlign: 'middle', marginRight: '10px' }} fontSize="small" />
+              History
+            </>
+          }
+          noSafesMessage={"You haven't visited any safes yet"}
+        />
         <DataWidget />
       </Box>
     </Box>

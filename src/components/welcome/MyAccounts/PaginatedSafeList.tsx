@@ -12,6 +12,7 @@ type PaginatedSafeListProps = {
   title: ReactNode
   noSafesMessage?: ReactNode
   action?: ReactElement
+  lastAccessed?: number
   onLinkClick?: () => void
 }
 
